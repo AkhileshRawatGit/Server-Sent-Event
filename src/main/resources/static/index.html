@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Process Control 🔥</h2>
+
+<button onclick="startProcess()">Start Process</button>
+
+<div id="output"></div>
+
+<script>
+    const userId = "user1";
+
+    // SSE connection
+    const eventSource = new EventSource(`http://localhost:8080/api/subscribe/${userId}`);
+
+    eventSource.onmessage = function(event) {
+        const div = document.getElementById("output");
+        div.innerHTML += "<p>" + event.data + "</p>";
+    };
+
+    function startProcess() {
+        fetch(`http://localhost:8080/api/send/${userId}`)
+            .then(res => res.text())
+            .then(data => console.log(data));
+    }
+</script>
+
+</body>
+</html>
